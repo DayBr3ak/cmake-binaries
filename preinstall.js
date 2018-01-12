@@ -24,21 +24,6 @@ const archives = [
 ];
 
 function init() {
-  // const exePaths = require('./index.js');
-
-  // const bins = {};
-  // for (const proc of Object.keys(exePaths)) {
-  //   try {
-  //     const path = exePaths[proc]();
-  //     bins[proc] = path;
-  //   } catch (e) {
-  //     // ignore
-  //   }
-  // }
-
-  // package['bin'] = bins;
-  // return writeFile(path.join(__dirname, 'package.json'), JSON.stringify(package, null, 2));
-
   return Promise.resolve();
 }
 
@@ -105,21 +90,8 @@ init()
   .then(b => writeFile(tempPath, b, 'binary'))
   .then(() => unzip(tempPath, outPath))
   .then(() => rimraf(tempPath))
-  // .then(() => {
-
-  // })
   .then(() => console.log('done'))
   .catch(e => {
     console.error(e);
     process.exit(1);
   });
-
-
-
-
-
-
-
-
-
-
