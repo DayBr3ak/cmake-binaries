@@ -8,7 +8,16 @@
     "linux",
     "darwin"
   ],
-  "scripts": {},
+  "cpu": [
+    "x64",
+    "x32"
+  ],
+  "cmake_version_base": "3.10",
+  "cmake_version_rev": "1",
+  "scripts": {
+    "preinstall": "node preinstall.js",
+    "prepublish": "node prepublish.js"
+  },
   "bin": {},
   "repository": {
     "type": "git",
@@ -21,6 +30,13 @@
   },
   "homepage": "https://github.com/DayBr3ak/cmake-binaries#readme",
   "devDependencies": {
-    "tar": "^4.2.0"
+    "node-fetch": "^1.7.3"
+  },
+  "dependencies": {
+    "decompress": "^4.2.0",
+    "gauge": "^2.7.4",
+    "rimraf": "^2.6.2",
+    "tar": "^4.2.0",
+    "yauzl": "^2.9.1"
   }
 }
