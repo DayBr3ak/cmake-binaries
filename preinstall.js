@@ -8,6 +8,7 @@ const http = require('https');
 const writeFile = promisify(require('fs').writeFile);
 const readFile = promisify(require('fs').readFile);
 const rimraf = promisify(require('rimraf'));
+const mkdirp = promisify(require('mkdirp'));
 const decompress = require('decompress');
 
 const package = require('./package.json');
@@ -96,6 +97,7 @@ const tempPath = path.join(__dirname, 'temp');
 const outPath = path.join(__dirname, 'bin2');
 
 init()
+  .then(() => mkdirp(outPath))
   .then(() => rimraf(path.join(outPath, '*')))
   .then(() => fetchBuffer(url))
   .then(b => writeFile(tempPath, b, 'binary'))

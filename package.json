@@ -30,13 +30,12 @@
   },
   "homepage": "https://github.com/DayBr3ak/cmake-binaries#readme",
   "devDependencies": {
-    "node-fetch": "^1.7.3"
   },
   "dependencies": {
     "decompress": "^4.2.0",
     "gauge": "^2.7.4",
+    "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2",
-    "tar": "^4.2.0",
-    "yauzl": "^2.9.1"
+    "tar": "^4.2.0"
   }
 }
