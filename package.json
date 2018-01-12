@@ -1,0 +1,26 @@
+{
+  "name": "cmake-binaries",
+  "version": "1.0.0",
+  "description": "cmake binaries for npm",
+  "main": "index.js",
+  "os": [
+    "win32",
+    "linux",
+    "darwin"
+  ],
+  "scripts": {},
+  "bin": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DayBr3ak/cmake-binaries.git"
+  },
+  "author": "DayBr3ak <not-an-email-yet>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DayBr3ak/cmake-binaries/issues"
+  },
+  "homepage": "https://github.com/DayBr3ak/cmake-binaries#readme",
+  "devDependencies": {
+    "tar": "^4.2.0"
+  }
+}
