@@ -27,8 +27,9 @@ const procs = [
 module.exports = {};
 for (const proc of procs) {
   const name = proc.n || proc.p;
+  const fproc = formatProc(proc.p);
   if (!proc.os || proc.os.indexOf(process.platform) !== -1) {
-    module.exports[name] = () => path.join(binPath, formatProc(proc.p));
+    module.exports[name] = () => path.join(binPath, fproc);
   } else {
     module.exports[name] = () => { throw new Error(`${name} is only supported on ${proc.os}`) };
   }

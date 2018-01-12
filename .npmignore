@@ -2,3 +2,7 @@
 *.tar
 
 fetch-binaries.js
+bin/
+bin2/
+archives/
+

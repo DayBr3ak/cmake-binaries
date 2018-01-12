@@ -1,6 +1,6 @@
 {
   "name": "cmake-binaries",
-  "version": "1.0.0",
+  "version": "1.0.3-1",
   "description": "cmake binaries for npm",
   "main": "index.js",
   "os": [
@@ -16,9 +16,17 @@
   "cmake_version_rev": "1",
   "scripts": {
     "preinstall": "node preinstall.js",
-    "prepublish": "node prepublish.js"
+    "prepublishOnly": "node prepublish.js"
   },
-  "bin": {},
+  "bin": {
+    "cmake": "./scripts/cmake.js",
+    "cpack": "./scripts/cpack.js",
+    "ctest": "./scripts/ctest.js",
+    "ccmake": "./scripts/ccmake.js",
+    "cmakexbuild": "./scripts/cmakexbuild.js",
+    "cmake-gui": "./scripts/cmake-gui.js",
+    "cmcldeps": "./scripts/cmcldeps.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DayBr3ak/cmake-binaries.git"
@@ -29,8 +37,7 @@
     "url": "https://github.com/DayBr3ak/cmake-binaries/issues"
   },
   "homepage": "https://github.com/DayBr3ak/cmake-binaries#readme",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "decompress": "^4.2.0",
     "gauge": "^2.7.4",
