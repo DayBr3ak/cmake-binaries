@@ -6,7 +6,7 @@ const path = require('path');
 const http = require('https');
 
 const writeFile = promisify(require('fs').writeFile);
-const readFile = promisify(require('fs').readFile);
+const link = promisify(require('fs').link);
 const rimraf = promisify(require('rimraf'));
 const mkdirp = promisify(require('mkdirp'));
 const decompress = require('decompress');
@@ -15,6 +15,10 @@ const package = require('./package.json');
 const VERSION_BASE = package['cmake_version_base'];
 const VERSION_REV = package['cmake_version_rev'];
 const VERSION = `${VERSION_BASE}.${VERSION_REV}`;
+
+const tempPath = path.join(__dirname, 'temp');
+const linkPath = path.join(__dirname, 'bin');
+const outPath = path.join(__dirname, 'bin2');
 
 const archives = [
   'win32-x86.zip',
@@ -74,23 +78,62 @@ function fetchBuffer(url) {
   });
 }
 
+function makeEmptyFile(path) {
+  return writeFile(path, '');
+}
+
+function makeLinks() {
+  const exePaths = require('./index.js');
+  const promises = [];
+  for (const _name of Object.keys(exePaths)) {
+    let name = _name;
+    if (name === 'cmakeGui') name = 'cmake-gui';
+    try {
+      const exe = exePaths[_name]();
+
+      if (process.platform === 'win32') {
+        // npm on windows is f** stupid, you need both an exe and a file without extension for it to install.
+        promises.push(makeEmptyFile(path.join(linkPath, name)));
+        name = name + '.exe';
+      }
+      const p = link(exe, path.join(linkPath, name));
+      promises.push(p);
+
+    } catch (e) {
+      if (e.message.includes('is only supported on')) {
+        // create error script!
+
+        const file = `#!/usr/bin/env node
+console.error("${e.message}");
+process.exit(1);
+`;
+        promises.push(writeFile(path.join(linkPath, name), file));
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  return Promise.all(promises);
+}
+
 const isTar = archive.includes('tar.gz');
 const unzip = isTar ?
   (input, output) => tar.x({ file: input, cwd: output, strip: 1 })
   :(input, output) => decompress(input, output, { strip: 1 })
 
 const url = archiveToUrl(archive);
-const tempPath = path.join(__dirname, 'temp');
-const outPath = path.join(__dirname, 'bin2');
 
 init()
   .then(() => mkdirp(outPath))
+  .then(() => mkdirp(linkPath))
   .then(() => rimraf(path.join(outPath, '*')))
   .then(() => fetchBuffer(url))
   .then(b => writeFile(tempPath, b, 'binary'))
   .then(() => unzip(tempPath, outPath))
   .then(() => rimraf(tempPath))
-  .then(() => console.log('done'))
+  .then(makeLinks)
+  .then(() => console.log('done!'))
   .catch(e => {
     console.error(e);
     process.exit(1);

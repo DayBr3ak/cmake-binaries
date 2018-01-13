@@ -1,6 +1,6 @@
 {
   "name": "cmake-binaries",
-  "version": "1.0.3-1",
+  "version": "1.0.5",
   "description": "cmake binaries for npm",
   "main": "index.js",
   "os": [
@@ -19,13 +19,13 @@
     "prepublishOnly": "node prepublish.js"
   },
   "bin": {
-    "cmake": "./scripts/cmake.js",
-    "cpack": "./scripts/cpack.js",
-    "ctest": "./scripts/ctest.js",
-    "ccmake": "./scripts/ccmake.js",
-    "cmakexbuild": "./scripts/cmakexbuild.js",
-    "cmake-gui": "./scripts/cmake-gui.js",
-    "cmcldeps": "./scripts/cmcldeps.js"
+    "cmake": "./bin/cmake",
+    "cpack": "bin/cpack",
+    "ctest": "bin/ctest",
+    "ccmake": "bin/ccmake",
+    "cmakexbuild": "bin/cmakexbuild",
+    "cmake-gui": "bin/cmake-gui",
+    "cmcldeps": "bin/cmcldeps"
   },
   "repository": {
     "type": "git",
