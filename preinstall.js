@@ -90,7 +90,6 @@ function makeLinks() {
     if (name === 'cmakeGui') name = 'cmake-gui';
     try {
       const exe = exePaths[_name]();
-
       if (process.platform === 'win32') {
         // npm on windows is f** stupid, you need both an exe and a file without extension for it to install.
         promises.push(makeEmptyFile(path.join(linkPath, name)));
@@ -98,11 +97,9 @@ function makeLinks() {
       }
       const p = link(exe, path.join(linkPath, name));
       promises.push(p);
-
     } catch (e) {
       if (e.message.includes('is only supported on')) {
         // create error script!
-
         const file = `#!/usr/bin/env node
 console.error("${e.message}");
 process.exit(1);
@@ -113,7 +110,6 @@ process.exit(1);
       }
     }
   }
-
   return Promise.all(promises);
 }
 
