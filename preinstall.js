@@ -52,6 +52,7 @@ if (process.platform === 'win32') {
   throw new Error('unsupported platform');
 }
 
+/* Fetch a file as a buffer, and display a progress bar */
 function fetchBuffer(url) {
   return new Promise((resolve, reject) => {
     http.get(url, res => {
@@ -82,6 +83,7 @@ function makeEmptyFile(path) {
   return writeFile(path, '');
 }
 
+/* will make hard links of binaries, so npm can correctly install the binaries as per the package.json */
 function makeLinks() {
   const exePaths = require('./index.js');
   const promises = [];
@@ -91,20 +93,22 @@ function makeLinks() {
     try {
       const exe = exePaths[_name]();
       if (process.platform === 'win32') {
-        // npm on windows is f** stupid, you need both an exe and a file without extension for it to install.
-        promises.push(makeEmptyFile(path.join(linkPath, name)));
+        // npm on windows is stupid, you need both an exe and a file without extension for it to install.
+        const emptyFilePromise = makeEmptyFile(path.join(linkPath, name));
+        promises.push(emptyFilePromise);
         name = name + '.exe';
       }
-      const p = link(exe, path.join(linkPath, name));
-      promises.push(p);
+      const linkPromise = link(exe, path.join(linkPath, name));
+      promises.push(linkPromise);
     } catch (e) {
-      if (e.message.includes('is only supported on')) {
-        // create error script!
+      if (e && e.message && e.message.includes('is only supported on')) {
+        // create an error script.
         const file = `#!/usr/bin/env node
 console.error("${e.message}");
 process.exit(1);
 `;
-        promises.push(writeFile(path.join(linkPath, name), file));
+        const writePromise = writeFile(path.join(linkPath, name), file);
+        promises.push(writePromise);
       } else {
         throw e;
       }
@@ -113,6 +117,7 @@ process.exit(1);
   return Promise.all(promises);
 }
 
+/* Anybody wants to make nice package to decompress zip and tar? thanks */
 const isTar = archive.includes('tar.gz');
 const unzip = isTar ?
   (input, output) => tar.x({ file: input, cwd: output, strip: 1 })
